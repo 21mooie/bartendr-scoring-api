@@ -34,7 +34,7 @@ async function scoreHeapifyAndAddDocuments(client, closeClientAndWait) {
         if (!dryrun) {
             await recentlyUpdatedCollection.deleteOne(result);
         }
-        // TODO: make function which reformats comment to be how I would like it to be for display
+        //TODO: make function which reformats comment to be how I would like it to be for display
         delete result._id;
         const score = Scorer.score(result);
         result.score = score;
