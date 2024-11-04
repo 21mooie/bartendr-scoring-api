@@ -1,0 +1,17 @@
+{
+  "name": "bartendr-scoring-api",
+  "version": "1.0.0",
+  "main": "index.js",
+  "author": "Muata Nkosi",
+  "license": "MIT",
+  "scripts": {
+    "start": "set DEBUG=app,app:* && node script.js",
+    "start:local": "set DEBUG=app,app:* && node --env-file=.env script.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "dependencies": {
+    "@datastructures-js/heap": "^4.3.3",
+    "debug": "^4.3.7",
+    "mongodb": "^6.10.0"
+  }
+}
