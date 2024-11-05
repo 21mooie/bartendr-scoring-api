@@ -12,6 +12,7 @@
   "dependencies": {
     "@datastructures-js/heap": "^4.3.3",
     "debug": "^4.3.7",
-    "mongodb": "^6.10.0"
+    "mongodb": "^6.10.0",
+    "uuid": "^11.0.2"
   }
 }

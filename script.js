@@ -1,4 +1,5 @@
 const debug                                  = require('debug')('app:script');
+const uuid                                   = require('uuid');
 
 const DBService                              = require("./DBService");
 const Scorer                                 = require("./Scorer");
@@ -43,6 +44,7 @@ async function scoreHeapifyAndAddDocuments(client, closeClientAndWait) {
 
         maxToScore-=1;
     }
+
     const documents = [];
     async function emptyHeap() {
         // dateTimeAdded will be used to sort to get the newest documents added for explore page
@@ -55,12 +57,26 @@ async function scoreHeapifyAndAddDocuments(client, closeClientAndWait) {
         } else {
             debug('Documents to be added...');
             debug(documents);
+
             const exploreContentCollection = client.db(DBService.getDBNameForDiscoverableContent()).collection(DBService.getCollectionNameForExploreContent());
             await exploreContentCollection.insertMany(documents);
+
+            const usersExploredCollection = client.db(DBService.getDBNameForDiscoverableContent()).collection(DBService.getCollectionNameForUsersOffset());
+            const uid = uuid.v6();
+            debug(`New masterContentGenerationId ${uid}`);
+            await usersExploredCollection.updateOne(
+                { isMaster: true },
+                { $set: { masterContentGenerationId: uid, dateTimeUpdated: new Date() }},
+            );
+
             closeClientAndWait(client);
         }
     }
-    await emptyHeap();
+
+    if (minHeap.size() > 0 && !dryrun)
+        await emptyHeap();
+    else 
+        closeClientAndWait(client);
 }
 
 // may need to think of a way to programmatically remove older documents from explore_content once the collection gets too big

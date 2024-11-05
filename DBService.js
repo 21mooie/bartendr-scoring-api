@@ -29,6 +29,10 @@ class DBService {
         return 'explore_content';
     }
 
+    getCollectionNameForUsersOffset() {
+        return 'users_explored_offset';
+    }
+
     async close() {
         this.client.close();
         this.client = null;
